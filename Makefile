@@ -63,6 +63,13 @@ crosscompile:  ## Build the binaries for the primary OS'
 	GOOS=darwin $(GOBUILD) -ldflags "-X main.buildTime=$(DATE) -X main.appVersion=$(BUILD_VERSION)" -o compiled/ion-connect/darwin/$(APP) .
 	GOOS=windows $(GOBUILD) -ldflags "-X main.buildTime=$(DATE) -X main.appVersion=$(BUILD_VERSION)" -o compiled/ion-connect/windows/$(APP).exe .
 
+.PHONY: macerate
+macerate: clean crosscompile
+	rice append --exec compiled/ion-connect/windows/ion-connect.exe -i ./lib
+	rice append --exec compiled/ion-connect/darwin/ion-connect -i ./lib
+	rice append --exec compiled/ion-connect/linux/ion-connect -i ./lib
+
+
 .PHONY: dockerize
 dockerize: clean  ## Create a docker image of the project
 	CGO_ENABLED=0 GOOS=linux make build

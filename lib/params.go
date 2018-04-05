@@ -52,6 +52,7 @@ type PostParams struct {
 	Branch      string                 `json:"branch,omitempty"`
 	Source      string                 `json:"source,omitempty"`
 	Username    string                 `json:"username,omitempty"`
+	Org         string                 `json:"org,omitempty"`
 	Password    string                 `json:"password,omitempty"`
 	Active      bool                   `json:"active,omitempty"`
 	Flatten     bool                   `json:"flatten,omitempty"`
@@ -72,6 +73,7 @@ type GetParams struct {
 	ID          string                 `url:"id,omitempty"`
 	Text        string                 `url:"text,omitempty"`
 	Version     string                 `url:"version,omitempty"`
+	Org         string                 `json:"org,omitempty"`
 	Limit       string                 `url:"limit,omitempty"`
 	Offset      string                 `url:"offset,omitempty"`
 	File        string                 `url:"file,omitempty"`
