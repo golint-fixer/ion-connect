@@ -3,13 +3,24 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/ion-channel/ionic"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+)
+
+var (
+	teamID    string
+	projectID string
 )
 
 func init() {
-	fmt.Println("Adding command")
 	ProjectCmd.AddCommand(GetProjectCmd)
 	RootCmd.AddCommand(ProjectCmd)
+
+	GetProjectCmd.Flags().StringVarP(&teamID, "team-id", "t", "", "--team-id <some team id>")
+	GetProjectCmd.MarkFlagRequired("team-id")
+	GetProjectCmd.Flags().StringVarP(&projectID, "project-id", "p", "", "--project-id <some project id>")
+	GetProjectCmd.MarkFlagRequired("project-id")
 }
 
 // ProjectCmd - Container for holding project root and secondary commands
@@ -18,9 +29,6 @@ var ProjectCmd = &cobra.Command{
 	Short: "Project anything to the screen",
 	Long: `project is for printing anything back to the screen.
 For many years people have printed back to the screen.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("Inside ProjectCmd Run with args: %v\n", args)
-	},
 }
 
 // GetProjectCmd - Container for holding project root and secondary commands
@@ -30,6 +38,14 @@ var GetProjectCmd = &cobra.Command{
 	Long: `project is for printing anything back to the screen.
 For many years people have printed back to the screen.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("Inside GetProjectCmd Run with args: %v\n", args)
+		clionic, err := ionic.New(viper.GetString("endpoint_url"))
+		if err != nil {
+			panic(err)
+		}
+		project, err := clionic.GetProject(projectID, teamID, viper.GetString("secret_key"))
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf("%v", project)
 	},
 }

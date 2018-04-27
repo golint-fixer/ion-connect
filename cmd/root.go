@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"os/user"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -10,37 +11,25 @@ import (
 
 func init() {
 	cobra.OnInitialize(initConfig)
-
-	viper.BindPFlag("author", RootCmd.PersistentFlags().Lookup("author"))
-	viper.BindPFlag("projectbase", RootCmd.PersistentFlags().Lookup("projectbase"))
-	viper.BindPFlag("useViper", RootCmd.PersistentFlags().Lookup("viper"))
-	viper.SetDefault("author", "NAME HERE <EMAIL ADDRESS>")
-	viper.SetDefault("license", "apache")
-
 }
 
 func initConfig() {
-	// Don't forget to read config either from cfgFile or from home directory!
-	// if cfgFile != "" {
-	// 	// Use config file from the flag.
-	// 	viper.SetConfigFile(cfgFile)
-	// } else {
-	// 	// Find home directory.
-	// 	home, err := homedir.Dir()
-	// 	if err != nil {
-	// 		fmt.Println(err)
-	// 		os.Exit(1)
-	// 	}
-	//
-	// 	// Search config in home directory with name ".cobra" (without extension).
-	// 	viper.AddConfigPath(home)
-	// 	viper.SetConfigName(".cobra")
-	// }
-	//
-	// if err := viper.ReadInConfig(); err != nil {
-	// 	fmt.Println("Can't read config:", err)
-	// 	os.Exit(1)
-	// }
+	viper.AutomaticEnv()
+	usr, err := user.Current()
+	if err != nil {
+		panic(err)
+	}
+	fi, err := os.Open(usr.HomeDir + "/.ionchannel/credentials")
+	if err != nil {
+		panic(err)
+	}
+	viper.SetDefault("endpoint_url", "https://api.ionchannel.io/")
+	viper.SetConfigType("props")
+	viper.SetEnvPrefix("ionchannel")
+	err = viper.ReadConfig(fi) // Find and read the config file
+	if err != nil {            // Handle errors reading the config file
+		panic(err)
+	}
 
 }
 
