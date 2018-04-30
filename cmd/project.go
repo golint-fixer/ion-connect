@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/ion-channel/ionic"
@@ -46,6 +47,10 @@ For many years people have printed back to the screen.`,
 		if err != nil {
 			panic(err)
 		}
-		fmt.Printf("%v", project)
+		bytes, err := json.Marshal(project)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Printf(string(bytes))
 	},
 }
