@@ -29,6 +29,7 @@ import (
 
 //PostParams represents the fields of an Ionize API HTTP POST method
 type PostParams struct {
+	Repo        string                 `json:"repo,omitempty"`
 	Project     string                 `json:"project,omitempty"`
 	Product     string                 `json:"product,omitempty"`
 	URL         string                 `json:"url,omitempty"`
@@ -65,6 +66,7 @@ type PostParams struct {
 
 //GetParams represents the fields of an Ionize API HTTP GET method
 type GetParams struct {
+	Repo        string                 `url:"repo,omitempty"`
 	Project     string                 `url:"project,omitempty"`
 	Product     string                 `url:"product,omitempty"`
 	URL         string                 `url:"url,omitempty"`

@@ -310,6 +310,21 @@
               required: True
               type: string
 
+    # Community
+    - name: community
+      usage: set of commands for viewing community data about software
+      subcommands:
+        - name: get-repo
+          url: /repo/getRepo
+          method: get
+          usage: get community attributes about a repo
+          flags:
+            - name: repo
+              value:
+              usage: The the org/name repo identifier
+              required: True
+              type: string
+
     # projects
     - name: project
       usage: set of commands for manipulating projects for your team
